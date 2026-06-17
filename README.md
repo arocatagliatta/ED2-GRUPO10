@@ -90,7 +90,30 @@ El dispositivo resuelve la necesidad de adaptabilidad vial y seguridad en cruces
 
   1. **Primera prioridad - Interrupción Externa (`INTF` en INTCON):** Se evalúa en primer lugar la bandera del botón peatonal conectado a `RB0`. Al ser un dispositivo de seguridad crítica vial (paso de peatones), requiere la atención inmediata del procesador para interrumpir el flujo normal vehicular, forzando la transición rápida al estado de cruce seguro.
   2. **Segunda prioridad - Desborde de Timer0 (`T0IF` en INTCON):** Se evalúa inmediatamente después. Al estar encargado de tareas repetitivas de refresco visual en los displays de 7 segmentos.
- 
+
+ ---
+  
+## 🔄 4. Proceso de Integración y Desarrollo
+
+Etapa 1 (Validación inicial): Configuración base, puertos y tiempos:
+  * Configuración del oscilador y Timer0: Se configuró el oscilador interno a 4 MHz para obtener un ciclo de instrucción de 1 µs. Se implementó el Timer0 con reloj interno y prescaler 1:256. Se calibró la carga del TMR0 con el valor 237 para generar un desbordamiento exacto cada 4.8 ms. Contando 206 de estas interrupciones se consiguio 1 segundo para el contador del semáforo.
+  * Asignación de puertos: Se definieron las entradas y salidas básicas del sistema configurando los registros `TRISA` (LDR y transistores multiplexado), `TRISB` (RB0), `TRISC` (UART y servomotor), `TRISD` (Display) y `TRISE` (Buzzer).
+
+Etapa 2 (Adquisición/Comunicación): Sensores, interrupciones externas y UART:
+  * Conversión LDR (ADC): Se implementó el uso del canal AN0 del conversor ADC para medir automáticamente la luz ambiente con un valor de 8 bits. Esta lectura se ejecuta y verifica continuamente en el bucle principal (PROGRAMA_PRINCIPAL y ESPERA_ADC).
+  * Interrupción por hardware (RB0): Se conecto un botón al pin RB0 para utilizar su interrupción externa (INTF).
+  * Comunicación Serie (UART): Se implementó la transmisión y recepción por consola configurando la UART a 9600 baudios. Se desarrollaron las rutinas de transmisión de cadenas de caracteres para visualizar tramas de estado completo como `[VERDE] BARRERA:CERRADA SENSOR:DIA`.
+
+Etapa 3 (Integración lógica): Máquina de estados y Concurrencia (Main Loop + ISR):
+  * Arquitectura: La lógica se montó sobre una arquitectura dual combinando un programa principal en bucle y una Rutina de Servicio de Interrupción (ISR) generada por el Timer0 o RB0.
+  * Lógica del semaforo (Máquina de estados): Se programó una máquina con 4 estados definidos: Verde (0x00), Amarillo (0x01), Rojo (0x02) y Noche (0x04). Se implementó la lógica de transición decrementando la cuenta regresiva e iterando sobre la secuencia de dia (verde → amarillo → rojo → verde) o pasando al parpadeo amarillo nocturno.
+  * Multiplexado de displays: Aprovechando la rutina de interrupción (ISR) de 4.8 ms, se integró el encendido de los dos displays de 7 segmentos. Se habilitan secuencialmente las unidades y decenas a una velocidad justa para ver ambos encendidos de forma continua.
+
+Etapa 4 (Sistema Completo): Acople de actuadores finales, calibración y pruebas:
+  * Actuadores (Servo y buzzer): Se sumó un servomotor conectado como salida digital normal usando bucles de retardo calibrados por software (1ms, 2ms, 18ms, 19ms) para emular el PWM y lograr los grados exactos de apertura y cierre de la barrera. También se acopló un buzzer en RC5.
+  * Calibración: el umbral en el cual el programa detecta que es de noche es cuando la lectura del ADC es mnor a 50, se toma de 0v a 5v de la entrada del LDR y se considero un 20% para considerar que se active el modo noche.
+  * Pruebas de estrés e integración final: El resultado de la integración demostró que el enfoque concurrente fue exitoso. El sistema logró atender simultáneamente el multiplexado de la pantalla, la modulación del buzzer, la conversión del LDR y la comunicación UART interactiva sin que los retardos afectaran la sincronía del semáforo
+
 ---
 
  ## 📊 5. Ensayos, Pruebas y Resultados
