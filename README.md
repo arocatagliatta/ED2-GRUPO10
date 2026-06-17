@@ -127,7 +127,7 @@ Para garantizar la estabilidad y el correcto funcionamiento del semáforo inteli
    Con el circuito energizado mediante la fuente externa de 5V, se midieron los niveles de tensión estática en los nodos principales. Se constató un valor estable de 5V en las pistas de la protoboard y directamente entre los pines de alimentación del microcontrolador, manteniéndose dentro de los márgenes de operación y garantizando una referencia correcta para las lecturas analógicas del ADC acoplado al LDR.
 3. **Monitoreo y Diagnóstico por Telemetría Serie (UART):**
    Se validó la correcta configuración del módulo EUSART y la lógica del programa en Assembler conectando el PIC a la PC mediante la interfaz USB-TTL. Utilizando la consola del software del Bootloader (AN1310), se verificó la recepción en tiempo real de las tramas de texto automáticas emitidas por el sistema en cada cambio de estado (reportando el color activo, posición de la barrera y modo Día/Noche), confirmando el envio de estados y la correcta decodificación de caracteres.
-
+![UAR](docs/terminal_serie.png)
 ### 📸 Evidencia Fotográfica y Gráficos
 
 #### Capturas de la Terminal Serie (Telemetría UART)
