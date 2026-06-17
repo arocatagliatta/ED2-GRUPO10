@@ -40,6 +40,22 @@ El dispositivo resuelve la necesidad de adaptabilidad vial y seguridad en cruces
 * **Fiscalización Electrónica Integrada:** Incorporar sensores de velocidad de efecto Doppler junto a módulos de captura de imágenes para detectar y registrar automáticamente vehículos que excedan los límites de velocidad o crucen con la señal de luz roja encendida.
 
   ---
+## 📐 2. Arquitectura del Sistema: Hardware y Software (Común)
+
+### 🔌 Hardware & Interconexión
+
+* **Diagrama de Bloques:**
+
+* **Esquemático del Circuito:**
+
+* **Descripción del Circuito y Consideraciones de Diseño:** El hardware se centra en un PIC16F887. La etapa de entrada del sensor cuenta con un divisor de tensión con un LDR para adaptar el rango dinámico de luz al ADC (0-5V), y tenemos un botón peatonal como otra entrada conectada a RB0. Para las etapas de salida de potencia, se implementaron transistores NPN (2N2222) operando en corte y saturación: dos para habilitar los cátodos comunes en el multiplexado de los displays, y uno para aislar el consumo de corriente del Buzzer (alimentado directo a VCC). Las señales lógicas de los LEDs y el PWM del servomotor se manejan directamente desde los pines del microcontrolador con sus respectivas resistencias limitadoras de corriente.
+
+
+### 💻 Arquitectura de Software (Firmware)
+
+* **Diagrama de Flujo o Máquina de Estados:**
+
+---
 
 ## ⚡ 3. Especificaciones Eléctricas, Alimentación y Entorno
 
