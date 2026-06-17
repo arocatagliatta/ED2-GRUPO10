@@ -120,24 +120,20 @@ Etapa 4 (Sistema Completo): Acople de actuadores finales, calibración y pruebas
 
 Para garantizar la estabilidad y el correcto funcionamiento del semáforo inteligente, se llevaron a cabo una serie de ensayos empíricos de puesta en marcha, divididos en pruebas de hardware y pruebas de software.
 
-### 🛠️ Pruebas Funcionales Realizadas
-
 1. **Ensayo de Integridad Eléctrica y Continuidad:** Antes de energizar el circuito por primera vez, se utilizó un multímetro digital en modo continuidad para verificar la ausencia de cortocircuitos entre las líneas principales de alimentación. Asimismo, se constató la correcta continuidad del cableado desde los pines del PIC16F887 hacia los periféricos críticos (módulo USB-TTL, displays de 7 segmentos y servomotor).
 2. **Validación de Tensiones de Alimentación:**
    Con el circuito energizado mediante la fuente externa de 5V, se midieron los niveles de tensión estática en los nodos principales. Se constató un valor estable de 5V en las pistas de la protoboard y directamente entre los pines de alimentación del microcontrolador, manteniéndose dentro de los márgenes de operación y garantizando una referencia correcta para las lecturas analógicas del ADC acoplado al LDR.
 3. **Monitoreo y Diagnóstico por Telemetría Serie (UART):**
    Se validó la correcta configuración del módulo EUSART y la lógica del programa en Assembler conectando el PIC a la PC mediante la interfaz USB-TTL. Utilizando la consola del software del Bootloader (AN1310), se verificó la recepción en tiempo real de las tramas de texto automáticas emitidas por el sistema en cada cambio de estado (reportando el color activo, posición de la barrera y modo Día/Noche), confirmando el envio de estados y la correcta decodificación de caracteres.
 ![UAR](docs/terminal_serie.png)
-### 📸 Evidencia Fotográfica y Gráficos
 
-#### Capturas de la Terminal Serie (Telemetría UART)
-A continuación, se observa el registro del flujo de datos en la consola del programa AN1310, donde se constata la conmutación de los estados y el reporte automático enviado por el microcontrolador:
+### 📸 Evidencia fotográfica y gráficos
+A continuación, vamos a mostrar imagenes del circuito final en sus 4 estados posible.
 
-(Cragar imagen)
-*Figura 5.1: Consola serie del cargador AN1310 reflejando los reportes de estado y eventos del sistema.*
+  *0x00 Verde: Se enciende el led de color verde durante 5 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
+  *0x01 Amarillo: Se enciende el led de color amarillos durante 2 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
+  *0x02 Rojo: Se enciende el led de color rojo durante 10 segundos, el buzer se encuentra encendido, los display muestran el tiempo restante, la barrera se encuentra alta y se envia estado a la UART.
+  *0x04 Noche: Se enciende el led de color amarillo de manera intermitente durante tiempo indefinido, el buzer se encuentra apagado, los display se encuentran apagados, la barrera se encuentra alta y se envia estado a la UART.
 
-#### Foto del Prototipo Real en Funcionamiento
-Registro visual de la maqueta armada sobre las placas de protoboard con todos sus componentes interconectados (LEDs, displays, servomotor de la barrera, buzzer y sensor LDR) operando bajo régimen normal:
-
-(cargar imagen)
-*Figura 5.2: Hardware final cableado y en ejecución durante los ensayos de laboratorio.*
+![Estado verde](docs/Estado_verde.png) ![Estado amarillo](docs/Estado_amarillo.png)
+![Estado rojo](docs/Estado_rojo.png) ![Estado noche](docs/Estado_noche.png)
