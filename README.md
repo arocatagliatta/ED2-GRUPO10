@@ -130,10 +130,10 @@ Para garantizar la estabilidad y el correcto funcionamiento del semáforo inteli
 ### 📸 Evidencia fotográfica y gráficos
 A continuación, vamos a mostrar imagenes del circuito final en sus 4 estados posible.
 
-  *0x00 Verde: Se enciende el led de color verde durante 5 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
-  *0x01 Amarillo: Se enciende el led de color amarillos durante 2 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
-  *0x02 Rojo: Se enciende el led de color rojo durante 10 segundos, el buzer se encuentra encendido, los display muestran el tiempo restante, la barrera se encuentra alta y se envia estado a la UART.
-  *0x04 Noche: Se enciende el led de color amarillo de manera intermitente durante tiempo indefinido, el buzer se encuentra apagado, los display se encuentran apagados, la barrera se encuentra alta y se envia estado a la UART.
+  * 0x00 Verde: Se enciende el led de color verde durante 5 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
+  * 0x01 Amarillo: Se enciende el led de color amarillos durante 2 segundos, el buzer se encuentra apagado, los display muestran dos guiones (--), la barrera se encuentra baja y se envia estado a la UART.
+  * 0x02 Rojo: Se enciende el led de color rojo durante 10 segundos, el buzer se encuentra encendido, los display muestran el tiempo restante, la barrera se encuentra alta y se envia estado a la UART.
+  * 0x04 Noche: Se enciende el led de color amarillo de manera intermitente durante tiempo indefinido, el buzer se encuentra apagado, los display se encuentran apagados, la barrera se encuentra alta y se envia estado a la UART.
 
 ![Estado verde](docs/Estado_verde.png) ![Estado amarillo](docs/Estado_amarillo.png)
 ![Estado rojo](docs/Estado_rojo.png) ![Estado noche](docs/Estado_noche.png)
