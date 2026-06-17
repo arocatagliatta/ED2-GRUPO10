@@ -3,9 +3,9 @@
 **Asignatura:** Electrónica Digital II - Universidad Nacional de Córdoba 
 
 **Integrantes:**
-Valentino Isola 
-Manuel Giordano 
-Leandro Agustín Rocatagliatta 
+Valentino Isola.
+Manuel Giordano. 
+Leandro Agustín Rocatagliatta. 
 **Profesor:** Ing. Blasco  
 
 ---
