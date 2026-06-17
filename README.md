@@ -44,7 +44,7 @@ El dispositivo resuelve la necesidad de adaptabilidad vial y seguridad en cruces
 
 ### 🔌 Hardware & Interconexión
 
-* **Diagrama de Bloques:** ![Diagrama de Bloques](docs/diagrama_software.png)
+* **Diagrama de Bloques:** 
 
 * **Esquemático del Circuito:** ![Esquemático Completo](hardware/esquematico.png)
 
@@ -53,7 +53,7 @@ El dispositivo resuelve la necesidad de adaptabilidad vial y seguridad en cruces
 
 ### 💻 Arquitectura de Software (Firmware)
 
-* **Diagrama de Flujo o Máquina de Estados:**
+* **Diagrama de Flujo o Máquina de Estados:** ![Diagrama de Bloques](docs/diagrama_software.png)
 
 ---
 
