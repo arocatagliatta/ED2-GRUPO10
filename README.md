@@ -38,3 +38,39 @@ El dispositivo resuelve la necesidad de adaptabilidad vial y seguridad en cruces
 * **Modo Nocturno de Bajo Consumo Inteligente:** Adaptar una rutina de ahorro energético basada en la instrucción `SLEEP` del microcontrolador que se active durante el estado nocturno; el sistema despertaría de forma cíclica mediante desbordes del Watchdog Timer (WDT) o interrupciones del Timer para generar el titilado amarillo intermitente, reduciendo drásticamente el consumo promedio de potencia.
 * **Cumplimiento de Normativa Vial y de Seguridad:** Investigar y adecuar el diseño para cumplir con normativas de seguridad vial y señalización urbana, asegurando tiempos de despeje mínimos obligatorios, redundancias de hardware ante fallas de lámparas y protección contra tensiones peligrosas para los usuarios.
 * **Fiscalización Electrónica Integrada:** Incorporar sensores de velocidad de efecto Doppler junto a módulos de captura de imágenes para detectar y registrar automáticamente vehículos que excedan los límites de velocidad o crucen con la señal de luz roja encendida.
+
+  ---
+
+## ⚡ 3. Especificaciones Eléctricas, Alimentación y Entorno
+
+### 🔌 Parámetros de Alimentación y Consumo
+
+* **Tensión de operación del sistema:** 5 VCC.
+* **Método de alimentación:** Fuente de corriente continua externa de 5V, inyectada de forma directa a las líneas de alimentación principal de la placa de desarrollo (VCC y GND).
+* **Rango lógico de señales:** Umbral de tensión digital de 0V a 5V.
+* **Consumo estimado del sistema:**
+  * **En modo activo :** ~240 mA (Cálculo estimado basado en el encendido simultáneo de: 1 LED indicador a ~15mA, 2 displays multiplexados a ~40mA en picos de encendido de segmentos, el consumo estático del PIC16F887 a 4MHz de ~5mA, picos de corriente del servomotor SG90 en movimiento de ~150mA, y el buzzer piezoeléctrico activo a ~30mA).
+
+### 📌Parametros propios de la materia
+
+* **Herramientas de Software:** MPLAB X IDE v5.35 para la escritura del código fuente en lenguaje Assembler, y la aplicación de Microchip
+  AN1310 High-Speed Bootloader para la transferencia directa del firmware vía puerto serie.
+* **Hardware de Programación/Depuración:** Módulo convertidor USB a TTL. La grabación de la memoria Flash del PIC se realiza sin necesidad de programadores dedicados (como PICkit), aprovechando un firmware *Bootloader* residente en las líneas de transmisión y recepción serie (`TX` en RC6 y `RX` en RC7).
+* **Configuración de Bits (Fuses Críticos):**
+  * **Oscilador (`_XT_OSC`):** Configurado para oscilador de cristal de cuarzo externo acoplado a los pines OSC1/OSC2 (frecuencia de trabajo de 4 MHz).
+  * **Watchdog Timer (`_WDT_OFF`):** Desactivado por hardware para evitar reinicios cíclicos involuntarios durante la ejecución de bucles de temporización largos.
+  * **Master Clear (`_MCLRE_ON`):** Activado el pin de reset externo (RE3/MCLR), asegurando la capacidad de reiniciar físicamente el circuito de forma manual.
+  * **Low Voltage Programming (`_LVP_OFF`):** Desactivado para liberar el pin RB3 para funciones de propósito general e impedir grabaciones accidentales por baja tensión.
+  * **Power-up Timer (`_PWRTE_ON`):** Activado para asegurar un retardo de encendido controlado mientras la fuente de alimentación externa estabiliza su voltaje en 5V.
+
+* **Periféricos Internos Utilizados:**
+  * **Timer0:** Configurado con preescaler asignado  en relación 1:256 para generar la base de tiempos periódica mediante interrupción por desborde. Es el encargado de administrar el multiplexado de los displays y el decremento del reloj de segundos.
+  * **Conversor Analógico-Digital (ADC):** Configurado a 8 bits de resolución (justificación a la izquierda), utilizando el canal `AN4` para leer la tensión analógica variable provista por el divisor resistivo del sensor LDR.
+  * **EUSART (UART):** Periférico de comunicación serie configurado en modo asincrónico a 9600 baudios, 8 bits de datos, sin paridad y 1 bit de parada para telemetría.
+  * **Puerto B (Interrupción por Cambio de Estado):** Configurado específicamente en el pin `RB0/INT` para capturar de forma inmediata el flanco de bajada provisto por la pulsación del botón de demanda peatonal.
+
+* **Gestión de Interrupciones y Prioridad por Software (Polling):**
+  Al contar el PIC16F887 con un único vector de interrupción por hardware ubicado en la dirección de memoria `0x04`, la discriminación de los eventos se resuelve mediante una estructura de prioridad por software (Polling) evaluando secuencialmente las banderas (*flags*) dentro de la Rutina de Servicio de Interrupción (ISR):
+
+  1. **Primera prioridad - Interrupción Externa (`INTF` en INTCON):** Se evalúa en primer lugar la bandera del botón peatonal conectado a `RB0`. Al ser un dispositivo de seguridad crítica vial (paso de peatones), requiere la atención inmediata del procesador para interrumpir el flujo normal vehicular, forzando la transición rápida al estado de cruce seguro.
+  2. **Segunda prioridad - Desborde de Timer0 (`T0IF` en INTCON):** Se evalúa inmediatamente después. Al estar encargado de tareas repetitivas de refresco visual en los displays de 7 segmentos.
