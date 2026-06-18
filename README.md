@@ -6,7 +6,7 @@
 Valentino Isola.
 Manuel Giordano. 
 Leandro Agustín Rocatagliatta. 
-**Profesor:** Ing. Blasco  
+**Profesor:** Ing. Marcos Javier Blasco  
 
 ---
 
